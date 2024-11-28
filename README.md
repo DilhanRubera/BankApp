@@ -22,7 +22,6 @@ This application is a two-tier architecture system with a **business layer** tha
    - **Technologies Used**:
      - **HTML/CSS** for structuring and styling the webpage.
      - **JavaScript (AJAX)** for making asynchronous API requests and dynamically updating the UI.
-     - **Axios** (or **Fetch API**) for API communication from the frontend.
 
 ## Features
 
