@@ -1,0 +1,66 @@
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\1\Bank App\BankDataModels\bin\Debug\BankDataModels.dll
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\1\Bank App\BankDataModels\bin\Debug\BankDataModels.pdb
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\1\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.AssemblyReference.cache
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\1\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.CoreCompileInputs.cache
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\1\Bank App\BankDataModels\obj\Debug\BankDataModels.dll
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\1\Bank App\BankDataModels\obj\Debug\BankDataModels.pdb
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1\Bank App\BankDataModels\bin\Debug\BankDataModels.dll
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1\Bank App\BankDataModels\bin\Debug\BankDataModels.pdb
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.AssemblyReference.cache
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.CoreCompileInputs.cache
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1\Bank App\BankDataModels\obj\Debug\BankDataModels.dll
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1\Bank App\BankDataModels\obj\Debug\BankDataModels.pdb
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.1\Bank App\BankDataModels\bin\Debug\BankDataModels.dll
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.1\Bank App\BankDataModels\bin\Debug\BankDataModels.pdb
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.1\Bank App\BankDataModels\bin\Debug\Newtonsoft.Json.dll
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.1\Bank App\BankDataModels\bin\Debug\Newtonsoft.Json.xml
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.1\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.AssemblyReference.cache
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.1\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.CoreCompileInputs.cache
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.1\Bank App\BankDataModels\obj\Debug\BankData.E7C31636.Up2Date
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.1\Bank App\BankDataModels\obj\Debug\BankDataModels.dll
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.1\Bank App\BankDataModels\obj\Debug\BankDataModels.pdb
+C:\Users\theni\Downloads\Bank App\Bank App\BankDataModels\bin\Debug\BankDataModels.dll
+C:\Users\theni\Downloads\Bank App\Bank App\BankDataModels\bin\Debug\BankDataModels.pdb
+C:\Users\theni\Downloads\Bank App\Bank App\BankDataModels\bin\Debug\Newtonsoft.Json.dll
+C:\Users\theni\Downloads\Bank App\Bank App\BankDataModels\bin\Debug\Newtonsoft.Json.xml
+C:\Users\theni\Downloads\Bank App\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.AssemblyReference.cache
+C:\Users\theni\Downloads\Bank App\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.CoreCompileInputs.cache
+C:\Users\theni\Downloads\Bank App\Bank App\BankDataModels\obj\Debug\BankData.E7C31636.Up2Date
+C:\Users\theni\Downloads\Bank App\Bank App\BankDataModels\obj\Debug\BankDataModels.dll
+C:\Users\theni\Downloads\Bank App\Bank App\BankDataModels\obj\Debug\BankDataModels.pdb
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.3 -Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\bin\Debug\BankDataModels.dll
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.3 -Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\bin\Debug\BankDataModels.pdb
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.3 -Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\bin\Debug\Newtonsoft.Json.dll
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.3 -Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\bin\Debug\Newtonsoft.Json.xml
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.3 -Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.AssemblyReference.cache
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.3 -Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.CoreCompileInputs.cache
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.3 -Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\obj\Debug\BankData.E7C31636.Up2Date
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.3 -Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\obj\Debug\BankDataModels.dll
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.3 -Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\obj\Debug\BankDataModels.pdb
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.5- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\bin\Debug\BankDataModels.dll
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.5- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\bin\Debug\BankDataModels.pdb
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.5- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\bin\Debug\Newtonsoft.Json.dll
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.5- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\bin\Debug\Newtonsoft.Json.xml
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.5- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.AssemblyReference.cache
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.5- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.CoreCompileInputs.cache
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.5- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\obj\Debug\BankData.E7C31636.Up2Date
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.5- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\obj\Debug\BankDataModels.dll
+E:\Curtin\YEAR 3\SEM 2\DC - 2024\Assignment 2\Part B\1.5- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\obj\Debug\BankDataModels.pdb
+C:\Users\theni\Downloads\1.6- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\bin\Debug\BankDataModels.dll
+C:\Users\theni\Downloads\1.6- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\bin\Debug\BankDataModels.pdb
+C:\Users\theni\Downloads\1.6- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\bin\Debug\Newtonsoft.Json.dll
+C:\Users\theni\Downloads\1.6- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\bin\Debug\Newtonsoft.Json.xml
+C:\Users\theni\Downloads\1.6- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.AssemblyReference.cache
+C:\Users\theni\Downloads\1.6- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.CoreCompileInputs.cache
+C:\Users\theni\Downloads\1.6- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\obj\Debug\BankData.E7C31636.Up2Date
+C:\Users\theni\Downloads\1.6- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\obj\Debug\BankDataModels.dll
+C:\Users\theni\Downloads\1.6- Flavio\Bank App - Copy\Bank App - Copy\Bank App\BankDataModels\obj\Debug\BankDataModels.pdb
+C:\Users\theni\Downloads\Final Submission\Final Submission\Submission\Bank App\BankDataModels\bin\Debug\BankDataModels.dll
+C:\Users\theni\Downloads\Final Submission\Final Submission\Submission\Bank App\BankDataModels\bin\Debug\BankDataModels.pdb
+C:\Users\theni\Downloads\Final Submission\Final Submission\Submission\Bank App\BankDataModels\bin\Debug\Newtonsoft.Json.dll
+C:\Users\theni\Downloads\Final Submission\Final Submission\Submission\Bank App\BankDataModels\bin\Debug\Newtonsoft.Json.xml
+C:\Users\theni\Downloads\Final Submission\Final Submission\Submission\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.AssemblyReference.cache
+C:\Users\theni\Downloads\Final Submission\Final Submission\Submission\Bank App\BankDataModels\obj\Debug\BankDataModels.csproj.CoreCompileInputs.cache
+C:\Users\theni\Downloads\Final Submission\Final Submission\Submission\Bank App\BankDataModels\obj\Debug\BankData.E7C31636.Up2Date
+C:\Users\theni\Downloads\Final Submission\Final Submission\Submission\Bank App\BankDataModels\obj\Debug\BankDataModels.dll
+C:\Users\theni\Downloads\Final Submission\Final Submission\Submission\Bank App\BankDataModels\obj\Debug\BankDataModels.pdb

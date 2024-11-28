@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core YOOOOOOO</a>.</p>
+    <form id="loginForm" method="POST" onsubmit="login();">
+        <input type="text" id="username" name="username" placeholder="Enter your username" required />
+        <button type="submit">Submit</button>
+
+    </form>
+    <div id="result"></div>
+
+    <div id="userDetails" style="display: none;">
+        <h2>User Details</h2>
+        <p><strong>Name:</strong> <span id="name"></span></p>
+        <p><strong>Email:</strong> <span id="email"></span></p>
+        <p><strong>Address:</strong> <span id="address"></span></p>
+        <p><strong>Phone No:</strong> <span id="phoneNo"></span></p>
+    </div>
+
+</div>
+
+<script>
+    function login() {
+        console.log("got to login");
+        const username = document.getElementById('username').value;
+        const url = 'http://localhost:5009/apicontroller/login';
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ Username: username })
+        })
+            .then(response => response.json())
+            .then(user => {
+                if (user) {
+                    document.getElementById('name').innerText = user.Name;
+                    document.getElementById('email').innerText = user.Email;
+                    document.getElementById('address').innerText = user.Address;
+                    document.getElementById('phoneNo').innerText = user.PhoneNo;
+                    document.getElementById('userDetails').style.display = 'block';
+
+                    console.log("name" + user.Name);
+                    console.log("email" + user.Email + user.Address + user.PhoneNo);
+
+                    document.getElementById('userDetails').style.display = 'block';
+
+                } else {
+                    document.getElementById('result').innerText = 'User not found';
+
+                }
+            })
+            .catch(
+                error => {
+                    console.error('Error:', error);
+                    document.getElementById('result').innerText = 'An error occurred';
+                });
+    }
+
+</script>

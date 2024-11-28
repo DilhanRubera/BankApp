@@ -1,0 +1,622 @@
+﻿
+<button id="logoutButton" onclick="logout()" style="display: none;">Logout</button>
+
+<div class="text-center">
+
+    <form id="loginForm" method="POST" onsubmit="login(event);"
+          style="display: flex; flex-direction: column; align-items: center;
+    justify-content: center; margin-top: 200px; height: 80vh; background-color: #ffffff;
+    padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <h2 style="margin-bottom: 25px; font-family: Arial, sans-serif; color: #333;">Login</h2>
+        <div id="loginErrorNotification" style="display: none; background-color: #dc3545; color: white; padding: 10px; border-radius: 4px; margin-bottom: 15px; text-align: center; max-width: 400px; margin: 0 auto;">
+            Error loggin in! Incorrect Password or User does not exist
+        </div>
+        <div style="margin-bottom: 15px; width: 100%; max-width: 300px; display: flex; flex-direction: column; align-items: flex-start;">
+            <label for="username" style="margin-bottom: 8px; font-family: Arial, sans-serif; color: #333;">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;" />
+        </div>
+
+        <div style="margin-bottom: 20px; width: 100%; max-width: 300px; display: flex; flex-direction: column; align-items: flex-start;">
+            <label for="password" style="margin-bottom: 8px; font-family: Arial, sans-serif; color: #333;">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;" />
+        </div>
+
+        <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-family: Arial, sans-serif;">Submit</button>
+    </form>
+
+    <div id="notification" style="display: none; background-color: #28a745; color: white; padding: 10px; border-radius: 4px; margin-bottom: 15px; text-align: center; max-width: 400px; margin: 0 auto;">
+        Profile updated successfully!
+    </div>
+    <div id="userDetails" style="display: none; background-color: #ffffff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); max-width: 400px; margin: 20px auto; font-family: Arial, sans-serif;">
+        <h4 style="margin-bottom: 15px; color: #333;">Profile Details</h4>
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+            <img id="profilePicture" src="default-profile.png" alt="Profile Picture" style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 15px; display: block;" />
+
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px; width: 100%;">
+                <label style="font-weight: bold; color: #333;">Name:</label>
+                <span id="name" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; background-color: #ffffff; color: #555; text-align: left;"></span>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px; width: 100%;">
+                <label style="font-weight: bold; color: #333;">Email:</label>
+                <span id="email" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; background-color: #ffffff; color: #555; text-align: left;"></span>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px; width: 100%;">
+                <label style="font-weight: bold; color: #333;">Address:</label>
+                <span id="address" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; background-color: #ffffff; color: #555; text-align: left;"></span>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px; width: 100%;">
+                <label style="font-weight: bold; color: #333;">Phone No:</label>
+                <span id="phoneNo" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; background-color: #ffffff; color: #555; text-align: left;"></span>
+            </div>
+        </div>
+        <button id="editDetailsButton" onclick="toggleEditForm()" style="margin-top: 15px; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Edit Details</button>
+    </div>
+
+    <div id="errorUpdateProfileNotification" style="display: none; background-color: #dc3545; color: white; padding: 10px; border-radius: 4px; margin-bottom: 15px; text-align: center; max-width: 400px; margin: 0 auto;">
+        Error updating profile. Please try again later!
+    </div>
+    <div id="editForm" style="display: none; background-color: #ffffff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); max-width: 400px; margin: 20px auto; font-family: Arial, sans-serif;">
+        <h4 style="margin-bottom: 15px; color: #333;">Edit User Details</h4>
+        <form id="updateForm" onsubmit="updateUser(event);" style="display: flex; flex-direction: column; gap: 15px;">
+           
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px; width: 100%;">
+                <img id="editProfilePicture" src="default-profile.png" alt="Profile Picture" style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 15px; display: block;" />
+                <label for="editProfilePic" style="font-family: Arial, sans-serif; color: #333;">Profile Picture</label>
+                <input type="file" id="editProfilePic" accept="image/*" style="padding: 10px; width: 100%;" />
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px; width: 100%;">
+                <label for="editEmail" style="font-family: Arial, sans-serif; color: #333;">Email</label>
+                <input type="email" id="editEmail" placeholder="Enter new email" required
+                       style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" />
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px; width: 100%;">
+                <label for="editAddress" style="font-family: Arial, sans-serif; color: #333;">Address</label>
+                <input type="text" id="editAddress" placeholder="Enter new address" required
+                       style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" />
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px; width: 100%;">
+                <label for="editPhoneNo" style="font-family: Arial, sans-serif; color: #333;">Phone Number</label>
+                <input type="tel" id="editPhoneNo" placeholder="Enter new phone number" required
+                       style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" />
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px; width: 100%;">
+                <label for="editPassword" style="font-family: Arial, sans-serif; color: #333;">Password</label>
+                <input type="password" id="editPassword" placeholder="Enter new password" required
+                       style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%;" />
+            </div>
+            <div style="display: flex; justify-content: space-between; gap: 10px; width: 100%;">
+                <button type="submit" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; flex: 1;">Update</button>
+                <button type="button" onclick="toggleEditForm()" style="padding: 10px 20px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; flex: 1;">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <form id="transactionForm" onSubmit="makeTransaction()" style="display: none; background-color: #ffffff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px; margin: 20px auto; font-family: Arial, sans-serif;">
+        <h4 style="margin-bottom: 15px; color: #333;">Initiate Transfer</h4>
+        <p style="margin-bottom: 10px; color: #333; text-align: left;">Enter Transaction Details Below</p>
+        <div id="transactionNotification" style="display: none; margin-bottom: 15px; padding: 10px; border-radius: 4px; text-align: center;"></div>
+
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+            <div class="form-group" style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px; width: 100%;">
+                <label for="senderAccountNo" style="font-family: Arial, sans-serif; font-weight: bold; color: #333; margin-bottom: 5px;">Sender Account No:</label>
+                <input type="number" id="senderAccountNo" name="senderAccountNo" required
+                       style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; background-color: #ffffff;">
+            </div>
+
+            <div class="form-group" style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px; width: 100%;">
+                <label for="receiverAccountNo" style="font-family: Arial, sans-serif; font-weight: bold; color: #333; margin-bottom: 5px;">Receiver Account No:</label>
+                <input type="number" id="receiverAccountNo" name="receiverAccountNo" required
+                       style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; background-color: #ffffff;">
+            </div>
+
+            <div class="form-group" style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px; width: 100%;">
+                <label for="transactionAmount" style="font-family: Arial, sans-serif; font-weight: bold; color: #333; margin-bottom: 5px;">Transaction Amount:</label>
+                <input type="number" id="transactionAmount" name="transactionAmount" required
+                       style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; background-color: #ffffff;">
+            </div>
+
+            <div class="form-group" style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px; width: 100%;">
+                <label for="transactionDescription" style="font-family: Arial, sans-serif; font-weight: bold; color: #333; margin-bottom: 5px;">Transaction Description:</label>
+                <input type="text" id="transactionDescription" name="transactionDescription" required
+                       style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; background-color: #ffffff;">
+            </div>
+
+            <button type="submit" style="padding: 12px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-family: Arial, sans-serif;
+               font-weight: bold; width: 100%; text-align: center; margin-top: 10px;">Transfer Amount</button>
+        </div>
+    </form>
+
+    <div id="accountTableContainer" style="display: none; width: 80%; margin: 20px auto; margin-top: 20px; ">
+        <h4 style="margin-bottom: 15px; margin-top: 12px; color: #333;">Account Details</h4>
+        <h7 style="margin-bottom: 15px; color: #333;">Click on account to view transaction history</h7>
+    </div>
+
+    <table style="display: none; width: 80%; margin: 20px auto; border-collapse: collapse; font-family: Arial, sans-serif; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" id="accountTable">
+        <thead>
+            <tr style="background-color: #ffffff; color: #555;">
+                <th style="padding: 12px; text-align: left;">Account Number</th>
+                <th style="padding: 12px; text-align: left;">Name</th>
+                <th style="padding: 12px; text-align: left;">Balance</th>
+            </tr>
+        </thead>
+        <tbody id="accountTableBody">
+        </tbody>
+    </table>
+
+
+
+    <div id="transactionTableContainer" style="display: none; width: 100%; margin: 20px auto; position: relative;  margin-top:30px;">
+        <h4 style="margin-bottom: 25px;  margin-top:15px; color: #333; ">Transaction History</h4>
+      
+        <button onclick="showFilterFields()" style="margin-top: 20px; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Filter Dates</button>
+
+        <div id="filterFields" style="display: none; margin-top: 20px;">
+            <label for="startDate" style="margin-right: 10px;">Start Date:</label>
+            <input type="date" id="startDate" style="margin-right: 20px;">
+            <label for="endDate" style="margin-right: 10px;">End Date:</label>
+            <input type="date" id="endDate" style="margin-right: 20px;">
+            <button onclick="applyDateFilter()" style="padding: 8px 16px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Apply</button>
+            <button onclick="removeFilter()" style="padding: 8px 16px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Remove </button>
+
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" id="accountTransactionTable">
+            <thead>
+                <tr style="background-color: #ffffff; color: #555;">
+                    <th style="padding: 12px; text-align: left;">Transaction ID</th>
+                    <th style="padding: 12px; text-align: left;">Description</th>
+                    <th style="padding: 12px; text-align: left;">Amount</th>
+                    <th style="padding: 12px; text-align: left;">Date</th>
+                    <th style="padding: 12px; text-align: left;">Sender Account No</th>        
+                    <th style="padding: 12px; text-align: left;">Receiver Account No</th>                
+                </tr>
+            </thead>
+            <tbody id="transactionTableBody">
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
+<script>
+    let userId = null;
+    let password = null;
+    let allTransactions = [];
+
+   async function login(event) {
+        event.preventDefault();
+        console.log("got to login");
+        const username = document.getElementById('username').value;
+         password = document.getElementById('password').value;
+
+        const url = "http://localhost:5204/api/login";
+        console.log("username" + username);
+        await fetch("http://localhost:5204/api/userLogin", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Username: username,
+                Password:password
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    // Show error notification
+                    const notification = document.getElementById('loginErrorNotification');
+                    notification.style.display = 'block';
+
+                    setTimeout(() => {
+                        notification.style.display = 'none';
+                    }, 5000);
+
+                    // Throw an error to prevent further .then() from executing
+                    return Promise.reject("Login failed"); // Can also pass the response text here if needed
+                }
+                return response.json();
+            })
+            .then(user => {
+                console.log("User response:", user);
+
+                if (user) {
+                    document.getElementById('name').innerText = user.name;
+                    document.getElementById('email').innerText = user.email;
+                    document.getElementById('address').innerText = user.address;
+                    document.getElementById('phoneNo').innerText = user.phoneNo;
+                    document.getElementById('userDetails').style.display = 'block';
+                      document.getElementById('profilePicture').src = user.profilePicdBytes ?
+                `data:image/png;base64,${user.profilePicdBytes}` : 'default-profile.png';
+                    userId = user.userId;
+                    password = user.password;
+                    console.log("Password" + password);
+                    fetchUserAccounts(userId);
+
+                    document.getElementById('loginForm').style.display = 'none';
+                    document.getElementById('transactionForm').style.display = 'block';
+                    document.getElementById('accountTableContainer').style.display = 'block';
+                    document.getElementById('accountTable').style.display = 'table';
+                    document.getElementById('logoutButton').style.display = 'block';
+                } else {
+
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    function logout() {
+		document.getElementById('loginForm').style.display = 'flex';
+		document.getElementById('transactionForm').style.display = 'none';
+		document.getElementById('accountTableContainer').style.display = 'none';
+		document.getElementById('accountTable').style.display = 'none';
+		document.getElementById('userDetails').style.display = 'none';
+		document.getElementById('editForm').style.display = 'none';
+		document.getElementById('transactionTableContainer').style.display = 'none';
+		document.getElementById('username').value = '';
+		document.getElementById('password').value = '';
+        document.getElementById('logoutButton').style.display = 'none';
+        document.getElementById('transactionForm').reset();
+        userId = '';
+        password = '';
+        allTransactions = [];
+	}
+
+    function toggleEditForm() {
+        const editForm = document.getElementById('editForm');
+        const userDetails = document.getElementById('userDetails');
+
+        if (editForm.style.display === 'none') {
+            editForm.style.display = 'block';
+            userDetails.style.display = 'none';
+
+            document.getElementById('editEmail').value = document.getElementById('email').innerText;
+            document.getElementById('editAddress').value = document.getElementById('address').innerText;
+
+            document.getElementById('editPhoneNo').value = document.getElementById('phoneNo').innerText;
+            document.getElementById('editPassword').value = password; 
+            const currentProfilePictureSrc = document.getElementById('profilePicture').src;
+            document.getElementById('editProfilePicture').src = currentProfilePictureSrc;
+        } else {
+            editForm.style.display = 'none';
+            userDetails.style.display = 'block';
+        }
+    }
+
+    async function updateUser(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('editEmail').value;
+        const phoneNo = document.getElementById('editPhoneNo').value;
+        let editPassword = document.getElementById('editPassword').value;
+        const address = document.getElementById('editAddress').value;
+
+        const profilePicInput = document.getElementById('editProfilePic');
+
+        let profilePicBase64 = null;
+
+        if (profilePicInput.files.length > 0) {
+            const file = profilePicInput.files[0];
+            profilePicBase64 = await toBase64(file);
+        }
+
+
+        await fetch("http://localhost:5204/api/updateUser", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Email: email,
+                PhoneNo: phoneNo,
+                Address:address,
+                Password: editPassword,
+                UserId: userId,
+                ProfilePicBase64: profilePicBase64
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => {
+                        throw new Error(error.message || 'Unknown error');
+                    });
+                }
+                console.log(response);
+               return response.json();
+            })
+            .then(updatedUser => {
+                console.log(updatedUser);
+                document.getElementById('email').innerText = updatedUser.email;
+                document.getElementById('phoneNo').innerText = updatedUser.phoneNo;
+                document.getElementById('address').innerText = updatedUser.address;
+                password = updatedUser.password;
+                document.getElementById('profilePicture').src = updatedUser.profilePicdBytes ?
+                    `data:image/png;base64,${updatedUser.profilePicdBytes}` : 'default-profile.png';
+                     const notification = document.getElementById('notification');
+                notification.style.display = 'block';
+
+                setTimeout(() => {
+                 notification.style.display = 'none';
+                 }, 3000);
+
+                toggleEditForm(); 
+                  })
+           
+            .catch(error => {
+                const notification = document.getElementById('errorUpdateProfileNotification');
+
+                notification.style.display = 'block';
+
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+                console.log(error);
+            });
+    }
+    function toBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    async function fetchUserAccounts(userId) {
+        try {
+            const response = await fetch(`http://localhost:5204/api/getUserAccounts/${userId}`)
+            .then(response=>response.json())
+                .then(data => {
+                    console.log(data);
+                    const accounts = data.$values;
+                    console.log(accounts);
+                    displayAccounts(accounts);
+                })
+
+
+          
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    function displayAccounts(accounts) {
+        const accountTableBody = document.getElementById('accountTableBody');
+        accountTableBody.innerHTML = '';
+        console.log(typeof accounts); 
+        console.log(Array.isArray(accounts)); 
+        console.log(accounts);
+        accounts.forEach(account => {
+            const row = document.createElement('tr');
+            row.classList.add('account-row');
+
+            row.style.backgroundColor = '#ffffff'; 
+            row.style.cursor = 'pointer'; // Change cursor to indicate interactivity
+
+            row.innerHTML = `
+            <td style="padding: 10px;  text-align: left;">${account.accountNumber}</td>
+            <td style="padding: 10px;  text-align: left;">${account.accountName}</td>
+            <td style="padding: 10px;  text-align: left;">${account.accountBalance}</td>
+        `;
+
+            row.addEventListener('mouseover', () => {
+                row.style.backgroundColor = '#e0e0e0'; // Highlight color on hover
+            });
+
+            row.addEventListener('mouseout', () => {
+                row.style.backgroundColor = '#ffffff'; // Revert to original color on mouse out
+            });
+
+            row.addEventListener('click', () => {
+                getAccountTransactions(account.accountId);
+            });
+
+            accountTableBody.appendChild(row);
+        });
+
+        if (accounts.length > 0) {
+            getAccountTransactions(accounts[0].accountId);
+            console.log("get initial Transactions called");
+        }
+
+
+    }
+
+    async function getAccountTransactions(accountId) {
+        removeFilter();
+        try {
+            // Fetch transactions for the clicked account
+            const response = await fetch(`http://localhost:5204/api/getAccountTransactions/${accountId}`);
+
+            // Parse the JSON response
+            const data = await response.json();
+
+            // Check if the data contains the transactions in the $values property
+            const transactions = data.$values;
+            console.log(transactions);
+
+            // Now pass the transaction list to the display function
+            allTransactions = [];
+            allTransactions = transactions.sort((a, b) => a.transactionId - b.transactionId);
+
+            displayTransactions(transactions);
+           
+        } catch (error) {
+            console.error('Error fetching transactions:', error);
+        }
+    }
+
+    function displayTransactions(transactions) {
+
+        const transactionTableBody = document.getElementById('transactionTableBody');
+        transactionTableBody.innerHTML = ''; // Clear any previous data
+
+        transactions.forEach(transaction => {
+          /*  const formattedDate = new Date(transaction.transactionDate).toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });*/
+            const formattedDate = new Date(transaction.transactionDate).toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+                
+            });
+            console.log(formattedDate);
+            const row = document.createElement('tr');
+            row.classList.add('transaction-row');
+            row.innerHTML = `
+                <td>${transaction.transactionId}</td>
+                <td>${transaction.transactionDescription}</td>
+                <td>${transaction.transactionAmount}</td>
+                    <td>${formattedDate}</td>
+               <td>${transaction.senderAccountNo}</td>
+                <td>${transaction.receiverAccountNo}</td>
+            `;
+            row.addEventListener('mouseover', () => {
+                row.style.backgroundColor = '#e0e0e0'; // Highlight color on hover
+            });
+
+            row.addEventListener('mouseout', () => {
+                row.style.backgroundColor = '#ffffff'; // Revert to original color on mouse out
+            });
+
+            transactionTableBody.appendChild(row);
+        });
+        document.getElementById('transactionTableContainer').style.display = 'block';
+
+
+    }
+
+    function closeTransactionTable() {
+        document.getElementById('transactionTableContainer').style.display = 'none';
+    }
+
+    async function makeTransaction() {
+        event.preventDefault();
+
+        const senderAccountNo = document.getElementById('senderAccountNo').value;
+        const receiverAccountNo = document.getElementById('receiverAccountNo').value;
+        const transactionAmount = document.getElementById('transactionAmount').value;
+        const transactionDescription = document.getElementById('transactionDescription').value;
+
+        const transactionData = {
+            senderAccountNo: parseInt(senderAccountNo),
+            receiverAccountNo: parseInt(receiverAccountNo),
+            transactionAmount: parseInt(transactionAmount),
+            transactionDescription: transactionDescription
+        };
+
+        console.log(transactionData);
+
+        try {
+            const response = await fetch(`http://localhost:5204/api/makeTransaction/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(transactionData),
+            });
+            const notification = document.getElementById('transactionNotification');
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log(result);
+              //  document.getElementById('result').innerHTML = 'Transaction Successful!';
+
+                notification.style.display = 'block';
+                notification.style.backgroundColor = '#28a745'; // Success (green)
+                notification.style.color = 'white';
+                notification.innerHTML = 'Transaction Successful!';
+               // getAccountTransactions(senderAccountNo);
+
+                document.getElementById('senderAccountNo').value = '';
+                document.getElementById('receiverAccountNo').value = '';
+                document.getElementById('transactionAmount').value = '';
+                document.getElementById('transactionDescription').value = '';
+                fetchUserAccounts(userId);
+            } else {
+                const errorContent = await response.text();
+                console.log(errorContent); 
+                
+                notification.style.display = 'block';
+                notification.style.backgroundColor = '#dc3545'; // Error (red)
+                notification.style.color = 'white';
+                notification.innerHTML = `Transaction Failed: ${errorContent}`;
+
+              //  document.getElementById('result').innerHTML = `Transaction Failed: ${errorContent}`;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            //document.getElementById('result').innerHTML = 'Error occurred during the transaction!';
+
+            const notification = document.getElementById('transactionNotification');
+            notification.style.display = 'block';
+            notification.style.backgroundColor = '#dc3545'; // Error (red)
+            notification.style.color = 'white';
+            notification.innerHTML = 'Error occurred during the transaction!';
+        }
+
+        setTimeout(() => {
+            document.getElementById('transactionNotification').style.display = 'none';
+        }, 5000);
+    }
+
+    function showFilterFields() {
+        document.getElementById('filterFields').style.display = 'block';
+    }
+
+    function applyDateFilter() {
+        const startDate = new Date(document.getElementById('startDate').value);
+        const endDate = new Date(document.getElementById('endDate').value);
+
+        if (isNaN(startDate) || isNaN(endDate)) {
+            alert('Please select valid start and end dates.');
+            return;
+        }
+
+        // Filter the transactions based on the selected date range
+        const filteredTransactions = allTransactions.filter(transaction => {
+            const transactionDate = new Date(transaction.transactionDate);
+            return transactionDate >= startDate && transactionDate <= endDate;
+        });
+
+        displayTransactions(filteredTransactions);
+    }
+
+    function removeFilter() {
+        document.getElementById('filterFields').style.display = 'none';
+        document.getElementById('startDate').value = '';
+        document.getElementById('endDate').value = '';
+        displayTransactions(allTransactions);
+
+    }
+
+
+
+
+</script>
+
+<style>
+    #logoutButton {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: Arial, sans-serif;
+    }
+</style>

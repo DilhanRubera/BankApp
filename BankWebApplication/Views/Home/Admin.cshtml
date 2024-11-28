@@ -1,0 +1,1067 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Admin Page";
+}
+
+<!-- Custom CSS for Orange Theme -->
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+    }
+
+    /* Orange Theme for Navbar, Buttons, and Headers */
+    .navbar, .btn-primary, .modal-header {
+        background-color: #ff9800;
+        border-color: #ff9800;
+    }
+
+        .btn-primary:hover {
+            background-color: #e68900;
+            border-color: #e68900;
+        }
+
+    h1, h2, h3 {
+        color: #ff9800;
+    }
+
+    button, .btn {
+        background-color: #ff9800;
+        border-color: #ff9800;
+        color: white;
+    }
+
+        button:hover, .btn:hover {
+            background-color: #e68900;
+        }
+
+    input[type="text"], input[type="email"], input[type="password"], select {
+        border: 2px solid #ff9800;
+        padding: 8px;
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+    }
+
+    th {
+        background-color: #ff9800;
+        color: white;
+    }
+
+    .box {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+
+    .modal-body {
+        background-color: #f4f4f4;
+    }
+
+    .modal-content {
+        border-radius: 10px;
+        border: 2px solid #ff9800;
+    }
+
+    #transactionsTable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        #transactionsTable th, #transactionsTable td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+
+    #transactionsTableBody {
+        display: block;
+        max-height: 400px; 
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    #transactionsTable thead, #transactionsTable tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .active-sort {
+        background-color: #007bff !important; 
+        border-color: #007bff !important; 
+        color: white !important; 
+    }
+
+</style>
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Admin Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to the Bank Admin Dashboard</h1>
+
+    <form id="adminLoginForm" method="POST" onsubmit="adminLogin(event);">
+        <input type="text" id="adminUsername" name="adminUsername" placeholder="Enter your username" required />
+        <input type="password" id="adminPassword" name="adminPassword" placeholder="Enter your password" required />
+        <button type="submit">Login</button>
+    </form>
+    <div id="loginResult"></div>
+</div>
+
+<div id="adminDashboard" style="display: none; margin-top: 30px;">
+    <h2>Admin Dashboard</h2>
+
+    <button onclick="showProfileModal()">View / Edit Profile</button>
+
+    <button onclick="fetchUsers()" style="margin-top: 20px;">View All Users</button>
+
+    <div style="margin-top: 20px;">
+        <select id="searchOption">
+            <option value="name">Name</option>
+            <option value="accountnumber">Account Number</option>
+        </select>
+        <input type="text" id="searchCriteria" placeholder="Search" />
+        <button onclick="searchUsers()">Search</button>
+    </div>
+
+    <div id="userList" style="margin-top: 20px;"></div>
+
+    <div id="createUserSection" style="margin-top: 30px;">
+        <h3>Create New User</h3>
+
+        <form id="createUserForm" onsubmit="createUser(event);">
+            <input type="text" id="newUserName" name="newUserName" placeholder="Enter name" required />
+            <input type="email" id="newUserEmail" name="newUserEmail" placeholder="Enter email" required />
+            <input type="text" id="newUserPhoneNumber" name="newUserPhoneNumber" placeholder="Enter phone number" required />
+            <input type="text" id="newUserAddress" name="newUserAddress" placeholder="Enter address" required />
+            <input type="password" id="newUserPassword" name="newUserPassword" placeholder="Enter password" required />
+            <button type="submit" class="btn btn-primary">Create User</button>
+        </form>
+        <div id="createUserResult"></div>
+    </div>
+
+    <button onclick="fetchTransactions()">View Transactions</button>
+
+    <div style="margin-top: 20px;">
+        <input type="text" id="id" placeholder="Search Transaction" />
+        <button onclick="searchTransactions()">Search</button>
+    </div>
+
+    <table id="usersTable" style="display: none; margin-top: 20px;">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="usersTableBody"></tbody>
+    </table>
+
+    <button onclick="fetchAuditLogs()" style="margin-top: 20px;">View Audit Logs</button>
+</div>
+
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="profileModalLabel">Admin Profile</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="adminProfileView" style="display: block;">
+                    <img id="adminProfilePicture" src="default-profile.png" alt="Profile Picture" style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 15px; display: block;" />
+                    <p><strong>Name:</strong> <span id="adminName"></span></p>
+                    <p><strong>Email:</strong> <span id="adminEmail"></span></p>
+                    <p><strong>Phone Number:</strong> <span id="adminPhoneNumber"></span></p>
+                    <p><strong>Address:</strong> <span id="adminAddress"></span></p>
+                    <button class="btn btn-primary" onclick="toggleEditProfile(true)">Edit</button>
+                </div>
+
+                <div id="adminProfileEdit" style="display: none;">
+                    <form id="editProfileForm" onsubmit="updateProfile(event);">
+                        <input type="hidden" id="adminId" />
+                        <div class="form-group">
+                            <label for="editAdminName">Name</label>
+                            <input type="text" id="editAdminName" class="form-control" placeholder="Enter new name" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="editAdminEmail">Email</label>
+                            <input type="email" id="editAdminEmail" class="form-control" placeholder="Enter new email" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="editAdminPhoneNumber">Phone Number</label>
+                            <input type="text" id="editAdminPhoneNumber" class="form-control" placeholder="Enter new phone number" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="editAdminPassword">Password</label>
+                            <input type="password" id="editAdminPassword" class="form-control" placeholder="Enter new password" />
+                        </div>
+                        <div class="form-group">
+                            <label for="editAdminAddress">Address</label>
+                            <input type="text" id="editAdminAddress" class="form-control" placeholder="Enter new address" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="editAdminProfilePic">Profile Picture</label>
+                            <img id="adminProfilePicPreview" src="" alt="Profile Picture" class="img-thumbnail" style="max-width: 150px; display: block; margin-bottom: 10px;" />
+                            <input type="file" id="editAdminProfilePic" class="form-control-file" accept="image/*" />
+                        </div>
+                        <button type="submit" class="btn btn-success">Update</button>
+                        <button type="button" class="btn btn-secondary" onclick="toggleEditProfile(false)">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">Edit User Profile</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm" onsubmit="updateUser(event);">
+                    <input type="hidden" id="editUserId" />
+                    <input type="text" id="editUserName" placeholder="Enter new name" required />
+                    <input type="email" id="editUserEmail" placeholder="Enter new email" required />
+                    <input type="text" id="editUserPhoneNumber" placeholder="Enter new phone number" required />
+                    <input type="text" id="editUserAddress" placeholder="Enter new address" required />
+                    <input type="password" id="editUserPassword" placeholder="Enter new password (optional)" />
+                    <button type="submit" class="btn btn-success">Update</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="manageAccountsModal" tabindex="-1" aria-labelledby="manageAccountsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="manageAccountsModalLabel">Manage User Accounts</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="accountList"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editAccountModal" tabindex="-1" aria-labelledby="editAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editAccountModalLabel">Edit Account</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editAccountForm" onsubmit="return validateAccountNumber(event);">
+                    <input type="hidden" id="accountId" />
+                    <input type="hidden" id="accountHolderId" />
+                    <input type="number" id="accountNumber" placeholder="Enter account number" required title="Account number must be exactly 6 digits" />
+                    <input type="hidden" id="accountBalance" />
+                    <input type="text" id="accountName" placeholder="Enter account name" required />
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-body">
+    <div id="accountList"></div>
+</div>
+
+<div id="transactionsSection" style="display: none; margin-top: 30px;">
+<h2>All Transactions</h2>
+<button onclick="showFilterFields()" style="margin-top: 20px; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Filter Dates</button>
+    <div style="margin-top: 20px;">
+        <button id="sortLatestBtn" onclick="sortTransactions('latest')">Sort Latest</button>
+        <button id="sortRecentBtn" onclick="sortTransactions('recent')">Sort Recently</button>
+</div>
+
+    <div id="filterFields" style="display: none; margin-top: 20px;">
+        <label for="startDate" style="margin-right: 10px;">Start Date:</label>
+        <input type="date" id="startDate" style="margin-right: 20px;">
+        <label for="endDate" style="margin-right: 10px;">End Date:</label>
+        <input type="date" id="endDate" style="margin-right: 20px;">
+        <button onclick="applyDateFilter()" style="padding: 8px 16px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Apply</button>
+        <button onclick="removeFilter()" style="padding: 8px 16px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Remove </button>
+
+    </div>
+
+<table id="transactionsTable" style="margin-top: 20px;">
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Sender ID</th>
+            <th>Sender Account Number</th>
+            <th>Sender Name</th>
+            <th>Receiver ID</th>
+            <th>Receiver Account Number</th>
+            <th>Receiver Name</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody id="transactionsTableBody"></tbody>
+</table>
+</div>
+
+<div id="auditLogsSection" style="margin-top: 20px; display: none;">
+    <h3>Audit Logs</h3>
+    <div style="max-height: 400px; overflow-y: auto;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Admin Username</th>
+                    <th>Action</th>
+                    <th>Timestamp</th>
+                    <th>Affected Resource</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody id="auditLogsTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    let allTransactions = [];
+    let activeSortOrder = '';
+    function fetchUsers(searchCriteria = '', searchOption = '') {
+        const url = searchCriteria ? `http://localhost:5204/api/SearchUsers?search=${searchCriteria}&option=${searchOption}` : 'http://localhost:5204/api/GetUsers';
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'Failed to fetch users. Please try again.');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                const users = data.$values;
+                const usersTableBody = document.getElementById('usersTableBody');
+                usersTableBody.innerHTML = '';
+                users.forEach(user => {
+                    const row = `
+                                        <tr>
+                                            <td>${user.userId}</td>
+                                            <td>${user.name}</td>
+                                            <td>${user.email}</td>
+                                            <td>${user.phoneNo}</td>
+                                            <td>${user.address}</td>
+                                            <td>
+                                                <button class="btn btn-primary" onclick="editUser(${user.userId}, '${user.name}', '${user.email}', '${user.phoneNo}', '${user.address}')">Edit</button>
+                                                <button class="btn btn-info" onclick="manageAccounts(${user.userId})">Manage Accounts</button>
+                                            </td>
+                                        </tr>
+                                    `;
+                    usersTableBody.innerHTML += row;
+                });
+                document.getElementById('usersTable').style.display = 'table';
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+                alert(`Error: ${error.message}`);
+            });
+    }
+
+    function searchUsers() {
+        const searchCriteria = document.getElementById('searchCriteria').value;
+        const searchOption = document.getElementById('searchOption').value;
+        fetchUsers(searchCriteria, searchOption);
+    }
+
+    async function manageAccounts(userId) {
+        try {
+            const response = await fetch(`http://localhost:5204/api/getUserAccounts/${userId}`);
+            const data = await response.json();
+            const accounts = data.$values;
+            console.log(accounts);
+            const accountList = document.getElementById('accountList');
+            accountList.innerHTML = '';
+            accounts.forEach(account => {
+                const isActivated = account.isActivated;
+                const activationButtonText = isActivated ? 'Deactivate' : 'Activate';
+                const activationButtonClass = isActivated ? 'btn-danger' : 'btn-success';
+                const activationButtonFunction = isActivated ? `deactivateAccount(${account.accountId}, ${account.accountHolderId})` : `activateAccount(${account.accountId}, ${account.accountHolderId})`;
+                const accountItem = `
+                            <div>
+                                <p>Account ID: ${account.accountId}</p>
+                                <p>Account Number: ${account.accountNumber}</p>
+                                <p>Account Name: ${account.accountName}</p>
+                                <p>Account Balance: ${account.accountBalance}</p>
+                                <button class="btn btn-primary" onclick="editAccount(${account.accountId}, ${account.accountNumber}, '${account.accountName}', ${account.accountBalance}, ${account.accountHolderId})">Edit</button>
+                                    <button class="btn ${activationButtonClass}" onclick="${activationButtonFunction}">${activationButtonText}</button>
+                            </div>
+                        `;
+                accountList.innerHTML += accountItem;
+            });
+            const createAccountButton = `<button class="btn btn-primary" onclick="showCreateAccountForm(${userId})">Create Account</button>`;
+            accountList.innerHTML += createAccountButton;
+            $('#manageAccountsModal').modal('show');
+        } catch (error) {
+            document.getElementById('result').innerText = error.message;
+            console.log(error);
+        }
+    }
+
+    async function fetchTransactions() {
+        try {
+            const response = await fetch('http://localhost:5204/api/GetTransactions');
+            console.log('Response:', response);
+            const data = await response.json();
+            console.log('Data:', data);
+            const transactions = data.$values;
+            console.log('Transactions:', transactions);
+            const transactionsTableBody = document.getElementById('transactionsTableBody');
+            transactionsTableBody.innerHTML = '';
+            transactions.forEach(transaction => {
+                const row = `
+                            <tr>
+                                    <td>${transaction.transactionId || '-'}</td>
+                                <td>${transaction.senderId || '-'}</td>
+                                <td>${transaction.senderAccountNo || '-'}</td>
+                                <td>${transaction.senderName || '-'}</td>
+                                <td>${transaction.receiverId || '-'}</td>
+                                <td>${transaction.receiverAccountNo || '-'}</td>
+                                <td>${transaction.receiverName || '-'}</td>
+                                <td>${transaction.transactionAmount || '-'}</td>
+                                <td>${transaction.transactionDate ? new Date(transaction.transactionDate).toLocaleString() : '-'}</td>
+                                <td>${transaction.transactionDescription || '-'}</td>
+                            </tr>
+                        `;
+                transactionsTableBody.innerHTML += row;
+            });
+            document.getElementById('transactionsSection').style.display = 'block';
+        } catch (error) {
+            console.error('Error fetching transactions:', error);
+        }
+    }
+
+    async function fetchTransactions() {
+        try {
+            const response = await fetch('http://localhost:5204/api/GetTransactions');
+            const data = await response.json();
+            allTransactions = data.$values;
+            displayTransactions(allTransactions);
+        } catch (error) {
+            console.error('Error fetching transactions:', error);
+        }
+    }
+
+    async function searchTransactions() {
+        const searchId = document.getElementById('id').value;
+
+        try {
+            const response = await fetch(`http://localhost:5204/api/SearchTransaction/${searchId}`);
+            console.log('Response:', response);
+            const data = await response.json();
+            console.log('Data:', data);
+            const transaction = data; 
+            const transactionsTableBody = document.getElementById('transactionsTableBody');
+            transactionsTableBody.innerHTML = '';
+
+            const row = `
+                        <tr>
+                            <td>${transaction.transactionId}</td>
+                            <td>${transaction.senderId}</td>
+                            <td>${transaction.senderAccountNo}</td>
+                            <td>${transaction.senderName || 'N/A'}</td>
+                            <td>${transaction.receiverId}</td>
+                            <td>${transaction.receiverAccountNo}</td>
+                            <td>${transaction.receiverName || 'N/A'}</td>
+                            <td>${transaction.transactionAmount}</td>
+                            <td>${new Date(transaction.transactionDate).toLocaleString()}</td>
+                            <td>${transaction.transactionDescription || 'N/A'}</td>
+                        </tr>
+                    `;
+            transactionsTableBody.innerHTML += row;
+
+            document.getElementById('transactionsSection').style.display = 'block';
+        } catch (error) {
+            console.error('Error fetching transactions:', error);
+            alert(`Error: Could not find transaction`);
+        }
+    }
+
+    function setActiveSortButton(order) {
+        document.getElementById('sortLatestBtn').classList.remove('active-sort');
+        document.getElementById('sortRecentBtn').classList.remove('active-sort');
+
+        if (order === 'latest') {
+            document.getElementById('sortLatestBtn').classList.add('active-sort');
+        } else if (order === 'recent') {
+            document.getElementById('sortRecentBtn').classList.add('active-sort');
+        }
+    }
+
+    async function sortTransactions(order) {
+        try {
+            setActiveSortButton(order);
+            activeSortOrder = order;
+
+            const response = await fetch('http://localhost:5204/api/GetTransactions');
+            const data = await response.json();
+            let transactions = data.$values;
+
+            // Sort transactions
+            if (order === 'recent') {
+                transactions.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
+            } else if (order === 'latest') {
+                transactions.sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate));
+            }
+
+            displayTransactions(transactions);
+        } catch (error) {
+            console.error('Error sorting transactions:', error);
+        }
+    }
+
+    /*async function sortTransactions(order) {
+        try {
+            const response = await fetch('http://localhost:5204/api/GetTransactions');
+            console.log('Response:', response);
+            const data = await response.json();
+            console.log('Data:', data);
+            let transactions = data.$values;
+            console.log('Transactions:', transactions);
+
+            // Sort transactions
+            if (order === 'recent') {
+                transactions.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
+            } else if (order === 'latest') {
+                transactions.sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate));
+            }
+
+            displayTransactions(transactions);
+        } catch (error) {
+            console.error('Error sorting transactions:', error);
+        }
+    }*/
+
+    function displayTransactions(transactions) {
+        const transactionsTableBody = document.getElementById('transactionsTableBody');
+        transactionsTableBody.innerHTML = '';
+        transactions.forEach(transaction => {
+            const row = `
+                            <tr>
+                                <td>${transaction.transactionId}</td>
+                                <td>${transaction.senderId}</td>
+                                <td>${transaction.senderAccountNo}</td>
+                                <td>${transaction.senderName || 'N/A'}</td>
+                                <td>${transaction.receiverId}</td>
+                                <td>${transaction.receiverAccountNo}</td>
+                                <td>${transaction.receiverName || 'N/A'}</td>
+                                <td>${transaction.transactionAmount}</td>
+                                <td>${new Date(transaction.transactionDate).toLocaleString()}</td>
+                                <td>${transaction.transactionDescription || 'N/A'}</td>
+                            </tr>
+                        `;
+            transactionsTableBody.innerHTML += row;
+        });
+        document.getElementById('transactionsSection').style.display = 'block';
+    }
+
+    async function activateAccount(accountId, accountHolderId) {
+        const response = await fetch(`http://localhost:5204/api/activateAccount/${accountId}`,
+            {
+                method: 'PUT'
+            });
+        if (response.ok) {
+            manageAccounts(accountHolderId);
+        } else {
+            console.error('Error activating account:', response.statusText);
+        }
+    }
+
+    async function deactivateAccount(accountId, accountHolderId) {
+        const response = await fetch(`http://localhost:5204/api/deactivateAccount/${accountId}`,
+            {
+                method: 'PUT'
+            });
+        if (response.ok) {
+            manageAccounts(accountHolderId);
+        } else {
+            console.error('Error deactivating account:', response.statusText);
+        }
+    }
+
+    function validateAccountNumber(event) {
+        event.preventDefault();
+        const accountNumberInput = document.getElementById('accountNumber');
+        const accountNumber = accountNumberInput.value;
+
+        if (accountNumber.length !== 6) {
+            event.preventDefault();
+            alert('Account number must be exactly 6 digits.');
+            return false;
+        }
+
+        saveAccount(event);
+
+        return true;
+    }
+
+    function showCreateAccountForm(accountHolderId) {
+        document.getElementById('accountId').value = '';
+        document.getElementById('accountNumber').value = '';
+        document.getElementById('accountName').value = '';
+        document.getElementById('accountBalance').value = 0;
+        document.getElementById('accountHolderId').value = accountHolderId;
+        $('#editAccountModal').modal('show');
+    }
+
+    function editAccount(accountId, accountNumber, accountName, accountBalance, accountHolderId) {
+        document.getElementById('accountId').value = accountId;
+        document.getElementById('accountNumber').value = accountNumber;
+        document.getElementById('accountName').value = accountName;
+        document.getElementById('accountHolderId').value = accountHolderId;
+        document.getElementById('accountBalance').value = accountBalance;
+        $('#editAccountModal').modal('show');
+    }
+
+
+
+    function getBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]); 
+            reader.onerror = error => reject(error);
+        });
+    }
+
+
+    async function saveAccount(event) {
+        event.preventDefault();
+        const accountId = document.getElementById('accountId').value;
+        const accountNumber = parseInt(document.getElementById('accountNumber').value);
+        const accountName = document.getElementById('accountName').value;
+        const accountBalance = parseInt(document.getElementById('accountBalance').value);
+        const accountHolderId = parseInt(document.getElementById('accountHolderId').value);
+
+        const Account = {
+            AccountId: accountId ? parseInt(accountId) : 0,
+            AccountNumber: accountNumber,
+            AccountName: accountName,
+            AccountBalance: accountBalance,
+            AccountHolderId: parseInt(accountHolderId)
+        };
+
+        const url = accountId ? `http://localhost:5204/api/updateAccount/${accountId}` : 'http://localhost:5204/api/createAccount';
+        const method = accountId ? 'PUT' : 'POST';
+
+        console.log(`Saving account with URL: ${url} and method: ${method}`);
+        console.log('Account data:', Account);
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(Account)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to save account.');
+            }
+
+            const responseText = await response.text();
+            console.log('Response text:', responseText);
+
+            // Attempt to parse the response as JSON
+            let jsonResponse;
+            try {
+                jsonResponse = JSON.parse(responseText);
+            } catch (error) {
+                console.error('Error parsing JSON response:', error);
+                throw new Error('Invalid JSON response');
+            }
+
+            console.log('Parsed JSON response:', jsonResponse);
+
+            $('#editAccountModal').modal('hide');
+            manageAccounts(document.getElementById('accountHolderId').value);
+        } catch (error) {
+            console.error('Error saving account:', error);
+        }
+    }
+
+
+
+    async function adminLogin(event) {
+        event.preventDefault();
+        const adminUsername = document.getElementById('adminUsername').value;
+        const adminPassword = document.getElementById('adminPassword').value;
+
+        await fetch("http://localhost:5204/api/adminLogin", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ Username: adminUsername, Password: adminPassword }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Login failed. Please try again.');
+                }
+                return response.json();
+            })
+            .then(admin => {
+                document.getElementById('loginResult').innerText = 'Hello Admin!!';
+                document.getElementById('adminLoginForm').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+
+                // Store admin profile details
+                document.getElementById('adminId').value = admin.adminId;
+                document.getElementById('adminName').innerText = admin.name;
+                document.getElementById('adminEmail').innerText = admin.email;
+                document.getElementById('adminPhoneNumber').innerText = admin.phoneNo;
+                document.getElementById('adminAddress').innerText = admin.address;
+                if (admin.profilePicdBytes) {
+                    document.getElementById('adminProfilePicture').src = admin.profilePicdBytes ?
+                        `data:image/png;base64,${admin.profilePicdBytes}` : 'default-profile.png';
+                    document.getElementById('adminProfilePicture').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                document.getElementById('loginResult').innerText = error.message;
+                console.error('Login error:', error);
+            });
+    }
+
+    function showProfileModal() {
+        $('#profileModal').modal('show');
+    }
+
+    function toggleEditProfile(isEditing) {
+        if (isEditing) {
+            document.getElementById('adminProfileView').style.display = 'none';
+            document.getElementById('adminProfileEdit').style.display = 'block';
+
+            //fill the form with current admin details
+            document.getElementById('editAdminName').value = document.getElementById('adminName').innerText;
+            document.getElementById('editAdminEmail').value = document.getElementById('adminEmail').innerText;
+            document.getElementById('editAdminPhoneNumber').value = document.getElementById('adminPhoneNumber').innerText;
+            document.getElementById('editAdminAddress').value = document.getElementById('adminAddress').innerText;
+            document.getElementById('editAdminPassword').value = document.getElementById('adminPassword').innerText;
+        } else {
+            document.getElementById('adminProfileView').style.display = 'block';
+            document.getElementById('adminProfileEdit').style.display = 'none';
+        }
+    }
+
+    async function createUser(event) {
+        event.preventDefault();
+        const newUser = {
+            name: document.getElementById('newUserName').value,
+            email: document.getElementById('newUserEmail').value,
+            phoneNo: parseInt(document.getElementById('newUserPhoneNumber').value, 10),
+            address: document.getElementById('newUserAddress').value,
+            password: document.getElementById('newUserPassword').value,
+        };
+
+        try {
+            const response = await fetch('http://localhost:5204/api/createUser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newUser),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Profile creation failed. Please try again.');
+            }
+            const user = await response.json();
+            console.log("New user created");
+            document.getElementById('newUserName').value = '';
+            document.getElementById('newUserEmail').value = '';
+            document.getElementById('newUserPhoneNumber').value = '';
+            document.getElementById('newUserAddress').value = '';
+            document.getElementById('newUserPassword').value = '';
+        }
+        catch (error) {
+            console.error('Error when creating new profile', error);
+            alert(`Error: ${error.message}`);
+        }
+    }
+
+
+    async function updateProfile(event) {
+        event.preventDefault();
+        const updatedAdmin = {
+            adminId: document.getElementById('adminId').value,
+            username: document.getElementById('editAdminName').value,
+            email: document.getElementById('editAdminEmail').value,
+            address: document.getElementById('editAdminAddress').value,
+            phoneNo: parseInt(document.getElementById('editAdminPhoneNumber').value, 10),
+        };
+
+        const password = document.getElementById('editAdminPassword').value;
+        if (password) {
+            updatedAdmin.password = password;
+        }
+        else{
+			updatedAdmin.password = null;
+		}
+
+        const profilePicFile = document.getElementById('editAdminProfilePic').files[0];
+        if (profilePicFile) {
+            updatedAdmin.profilePic = await getBase64(profilePicFile);
+        }
+        else 
+        {
+			updatedAdmin.profilePic = "";
+		}
+
+        console.log("Updated admin: ", updatedAdmin)
+
+        await fetch("http://localhost:5204/api/updateAdminProfile", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedAdmin),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Profile update failed. Please try again.');
+                }
+                return response.json();
+            })
+            .then(admin => {
+                console.log("Returned JSON content: ", admin); // Log the returned JSON content
+                // Update profile details
+                document.getElementById('adminName').innerText = admin.name;
+                document.getElementById('adminEmail').innerText = admin.email;
+                document.getElementById('adminPhoneNumber').innerText = admin.phoneNo.toString();
+                document.getElementById('adminAddress').innerText = admin.address;
+
+                if (admin.profilePicdBytes) {
+                    document.getElementById('adminProfilePicture').src = admin.profilePicdBytes ?
+                        `data:image/png;base64,${admin.profilePicdBytes}` : 'default-profile.png';
+                    document.getElementById('adminProfilePicture').style.display = 'block';
+                }
+
+                toggleEditProfile(false);
+                $('#profileModal').modal('hide');
+            })
+            .catch(error => {
+                console.error('Profile update error:', error);
+            });
+    }
+
+    async function deleteUser(userId) {
+        const confirmDelete = confirm("Are you sure you want to delete this user?");
+        if (!confirmDelete) return;
+
+        await fetch(`http://localhost:5204/api/deleteUser/${userId}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('User deleted successfully.');
+                    fetchUsers();
+                } else {
+                    throw new Error('Failed to delete user.');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting user:', error);
+            });
+    }
+
+    function editUser(userId, userName, userEmail, userPhone, userAddress) {
+        document.getElementById('editUserId').value = userId;
+        document.getElementById('editUserName').value = userName;
+        document.getElementById('editUserEmail').value = userEmail;
+        document.getElementById('editUserPhoneNumber').value = userPhone;
+        document.getElementById('editUserAddress').value = userAddress;
+
+        $('#editUserModal').modal('show');
+    }
+
+    async function updateUser(event) {
+        event.preventDefault();
+
+        const userId = document.getElementById('editUserId').value;
+        const email = document.getElementById('editUserEmail').value;
+        const phoneNo = document.getElementById('editUserPhoneNumber').value;
+        const password = document.getElementById('editUserPassword').value;
+        const address = document.getElementById('editUserAddress').value;
+
+        const updatedPassword = password.trim() === '' ? null : password;
+
+        const updatedUser = {
+            UserId: userId,
+            Email: email,
+            PhoneNo: phoneNo,
+            Password: updatedPassword,
+            Address: address,
+            ProfilePicdBytes: null
+        };
+
+        console.log("Sending updated user data:", updatedUser);
+
+        await fetch("http://localhost:5204/api/updateUser", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedUser)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => {
+                        throw new Error(error.message || 'Unknown error');
+                    });
+                }
+                console.log(response);
+                return response.json();
+            })
+            .then(updatedUser => {
+                console.log(updatedUser);
+                document.getElementById('email').innerText = updatedUser.email;
+                document.getElementById('phoneNo').innerText = updatedUser.phoneNo;
+                password = updatedUser.password;
+                document.getElementById('result').innerText = 'User details updated successfully.';
+                toggleEditForm();
+            })
+
+            .catch(error => {
+                document.getElementById('result').innerText = error.message;
+                console.log(error);
+            });
+    }
+
+    function byteArrayToBase64(byteArray) {
+        let binary = '';
+        const bytes = new Uint8Array(byteArray);
+        const len = bytes.byteLength;
+
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+
+        return window.btoa(binary);
+    }
+
+    function showFilterFields() {
+        document.getElementById('filterFields').style.display = 'block';
+    }
+
+    
+
+    async function applyDateFilter() {
+        try {
+            const response = await fetch('http://localhost:5204/api/GetTransactions');
+            const data = await response.json();
+            let transactions = data.$values;
+
+            const startDate = new Date(document.getElementById('startDate').value);
+            const endDate = new Date(document.getElementById('endDate').value);
+
+            if (isNaN(startDate) || isNaN(endDate)) {
+                alert('Please select valid start and end dates.');
+                return;
+            }
+
+            // Log the selected dates
+            console.log('Start Date:', startDate);
+            console.log('End Date:', endDate);
+
+            // Filter the transactions based on the selected date range
+            const filteredTransactions = transactions.filter(transaction => {
+                const transactionDate = new Date(transaction.transactionDate);
+                return transactionDate >= startDate && transactionDate <= endDate;
+            });
+
+            // Log the filtered transactions
+            console.log('Filtered Transactions:', filteredTransactions);
+
+            // Apply sorting if a sort button is active
+            if (activeSortOrder === 'recent') {
+                filteredTransactions.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
+            } else if (activeSortOrder === 'latest') {
+                filteredTransactions.sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate));
+            }
+
+            displayTransactions(filteredTransactions);
+        } catch (error) {
+            console.error('Error applying date filter:', error);
+        }
+    }
+
+    function removeFilter() {
+        document.getElementById('filterFields').style.display = 'none';
+        document.getElementById('startDate').value = '';
+        document.getElementById('endDate').value = '';
+        fetchTransactions();
+
+    }
+
+    function fetchAuditLogs() {
+        fetch('http://localhost:5204/api/getAuditLogs')
+            .then(response => response.json())
+            .then(data => {
+                const auditLogs = data.$values; // Access the array under $values
+                const auditLogsTableBody = document.getElementById('auditLogsTableBody');
+                auditLogsTableBody.innerHTML = '';
+                auditLogs.forEach(log => {
+                    const row = `
+                                <tr>
+                                    <td>${log.id}</td>
+                                    <td>${log.adminUsername}</td>
+                                    <td>${log.action}</td>
+                                    <td>${new Date(log.timestamp).toLocaleString()}</td>
+                                    <td>${log.affectedResource}</td>
+                                    <td>${log.details}</td>
+                                </tr>
+                            `;
+                    auditLogsTableBody.innerHTML += row;
+                });
+                document.getElementById('auditLogsSection').style.display = 'block';
+            })
+            .catch(error => console.error('Error fetching audit logs:', error));
+    }
+
+</script>
