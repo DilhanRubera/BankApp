@@ -21,7 +21,7 @@ This application is a two-tier architecture system with a **business layer** tha
    - Dynamically updates the UI based on API responses, e.g., displaying transaction histories or managing money transfers.
    - **Technologies Used**:
      - **HTML/CSS** for structuring and styling the webpage.
-     - **JavaScript (AJAX)** for making asynchronous API requests and dynamically updating the UI.
+     - **JavaScript** for making asynchronous API requests and dynamically updating the UI.
 
 ## Features
 
